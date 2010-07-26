@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# md2rtf
+# Converts a Markdown file to RTF with indented paragraphs
+
+BASENAME=${1%%.*}
+TEMPNAME=$BASENAME.tmp
+OUTPUTNAME=$BASENAME.rtf
+
+echo "<html><head><style>p { text-indent: 2em; }</style></head><body>" > $TEMPNAME
+markdown2 $1 >> $TEMPNAME
+echo "</body></html>" >> $TEMPNAME
+
+textutil $TEMPNAME -format html -convert rtf -output $OUTPUTNAME
+
+rm $TEMPNAME
